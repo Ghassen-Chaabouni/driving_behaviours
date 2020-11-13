@@ -246,6 +246,8 @@ camera_matrix = np.array(
                          )
                          
 
+danger = 0
+
 while(cap.isOpened()):
 #while True:
     ret, img = cap.read()
@@ -275,7 +277,7 @@ while(cap.isOpened()):
                                     shape[48],     # Left Mouth corner
                                     shape[54]      # Right mouth corner
                                 ], dtype="double")
-            dist_coeffs = np.zeros((4,1)) # Assuming no lens distortion
+            dist_coeffs = np.zeros((4,1)) # Assuming no lens distortion 
             (success, rotation_vector, translation_vector) = cv2.solvePnP(np.expand_dims(model_points, 1), np.expand_dims(image_points, 1), camera_matrix, dist_coeffs, flags=cv2.SOLVEPNP_UPNP)
             
             
@@ -322,33 +324,38 @@ while(cap.isOpened()):
                 #cv2.putText(img, "right", (50, 50), font, 2, (128, 255, 255), 3)
                 if(ang1<-5):
                     cv2.putText(img, "down right", (x1[0]+5, x1[1]+50), font, 0.5, (255, 255, 128), 2)
+                    danger += 1
                 elif(ang1>5):
                     cv2.putText(img, "up right", (x1[0]+5, x1[1]+50), font, 0.5, (255, 255, 128), 2)
+                    danger += 1
                 else:
                     cv2.putText(img, "right", (x1[0]+5, x1[1]+50), font, 0.5, (255, 255, 128), 2)
+                    danger += 1
                     
-                # start = timeit.default_timer()
-
-                # #Your statements here
-
-                # stop = timeit.default_timer()
-
-                # print('Time: ', stop - start)  
-
-                
+             
             elif(ang2<-30):
                 #cv2.putText(img, "left", (50, 50), font, 2, (128, 255, 255), 3)
                 if(ang1<-5):
                     cv2.putText(img, "up left", (x1[0]+5, x1[1]+50), font, 0.5, (255, 255, 128), 2)
+                    danger += 1
                 elif(ang1>5):
                     cv2.putText(img, "down left", (x1[0]+5, x1[1]+50), font, 0.5, (255, 255, 128), 2)
+                    danger += 1
                 else:
                     cv2.putText(img, "left", (x1[0]+5, x1[1]+50), font, 0.5, (255, 255, 128), 2)
+                    danger += 1
             else:
                 cv2.putText(img, "forward", (x1[0]+5, x1[1]+50), font, 0.5, (255, 255, 128), 2)
+                danger = 0
+                
+        
+        if(danger>20):
+            cv2.putText(img, "danger", (10, 30), font, 0.8, (0, 0, 255), 2)
+        else:
+            cv2.putText(img, "safe", (10, 30), font, 0.8, (0, 255, 0), 2)
             
-
-        cv2.imshow('img', img)
+        cv2.imshow('img', img)   
+        
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
     else:
