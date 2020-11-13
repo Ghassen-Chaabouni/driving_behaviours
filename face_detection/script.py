@@ -276,7 +276,7 @@ while(cap.isOpened()):
                                     shape[54]      # Right mouth corner
                                 ], dtype="double")
             dist_coeffs = np.zeros((4,1)) # Assuming no lens distortion
-            (success, rotation_vector, translation_vector) = cv2.solvePnP(model_points, image_points, camera_matrix, dist_coeffs, flags=cv2.SOLVEPNP_UPNP)
+            (success, rotation_vector, translation_vector) = cv2.solvePnP(np.expand_dims(model_points, 1), np.expand_dims(image_points, 1), camera_matrix, dist_coeffs, flags=cv2.SOLVEPNP_UPNP)
             
             
             # Project a 3D point (0, 0, 1000.0) onto the image plane.
