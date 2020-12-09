@@ -220,7 +220,7 @@ def draw_annotation_box(img, rotation_vector, translation_vector, camera_matrix,
     
 mark_detector = MarkDetector()
 
-cap = cv2.VideoCapture('video.mp4')
+cap = cv2.VideoCapture('video2.mp4')
 #cap = cv2.VideoCapture(0)
 
 ret, img = cap.read()
@@ -351,8 +351,13 @@ while(cap.isOpened()):
         
         if(danger>20):
             cv2.putText(img, "danger", (10, 30), font, 0.8, (0, 0, 255), 2)
+            with open("../face_detection.txt", "w") as file: 
+                file.write("danger")
         else:
             cv2.putText(img, "safe", (10, 30), font, 0.8, (0, 255, 0), 2)
+            with open("../face_detection.txt", "w") as file: 
+                file.write("safe")
+            
             
         cv2.imshow('img', img)   
         
