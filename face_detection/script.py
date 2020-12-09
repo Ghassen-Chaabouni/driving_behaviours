@@ -359,7 +359,7 @@ while(cap.isOpened()):
                 file.write("safe")
             
             
-        cv2.imshow('img', img)   
+        cv2.imshow('face_detection', img)   
         
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
